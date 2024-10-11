@@ -1,0 +1,942 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "name": "SqlServer wsbwmprowizjono DestinationWarehouse",
+        "connectionString": "Provider=SQLOLEDB;Data Source=localhost;User ID=michalzycki;Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=DestinationDatabase",
+        "impersonationMode": "impersonateAccount",
+        "account": "sqladmin",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "D_Customers",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CustomerID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "string",
+            "sourceColumn": "CustomerName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "CustomerCategoryName",
+            "dataType": "string",
+            "sourceColumn": "CustomerCategoryName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "CreditLimit",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "CreditLimit",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "FullName",
+            "dataType": "string",
+            "sourceColumn": "FullName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "PreferredName",
+            "dataType": "string",
+            "sourceColumn": "PreferredName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "PhoneNumber",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "PhoneNumber",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "EmailAddress",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "EmailAddress",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "CityName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "CityName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "StateProvinceCode",
+            "dataType": "string",
+            "sourceColumn": "StateProvinceCode",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "StateProvinceName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "StateProvinceName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "SalesTerritory",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "SalesTerritory",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "type": "calculated",
+            "name": "ClientType",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "If(",
+              "       CALCULATE(sum(F_Invoices[ExtendedPrice]),RELATEDTABLE(F_Invoices))>22000,",
+              "       \"Top Clients\",",
+              "       \"Regular Clients\"",
+              "       )",
+              ""
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "D_Customers",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[DimCustomers].*   FROM [agg].[DimCustomers] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "BusinessTerritoryHierarchy",
+            "levels": [
+              {
+                "name": "SalesTerritory",
+                "ordinal": 0,
+                "column": "SalesTerritory"
+              },
+              {
+                "name": "StateProvinceName",
+                "ordinal": 1,
+                "column": "StateProvinceName"
+              },
+              {
+                "name": "CityName",
+                "ordinal": 2,
+                "column": "CityName"
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[DimCustomers].*   FROM [agg].[DimCustomers] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimCustomers"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      },
+      {
+        "name": "D_Date",
+        "dataCategory": "Time",
+        "columns": [
+          {
+            "name": "ID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheDate",
+            "dataType": "dateTime",
+            "isKey": true,
+            "sourceColumn": "TheDate",
+            "formatString": "General Date",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "TheDay",
+            "dataType": "int64",
+            "sourceColumn": "TheDay",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheDayName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "TheDayName",
+            "sortByColumn": "TheDayOfWeek",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "TheWeek",
+            "dataType": "int64",
+            "sourceColumn": "TheWeek",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheISOWeek",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TheISOWeek",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheDayOfWeek",
+            "dataType": "int64",
+            "sourceColumn": "TheDayOfWeek",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheMonth",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TheMonth",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheMonthName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "TheMonthName",
+            "sortByColumn": "TheMonth",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "TheQuarter_tech",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TheQuarter",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheYear",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TheYear",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TheFirstOfMonth",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "TheFirstOfMonth",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "TheLastOfYear",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "TheLastOfYear",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "TheDayOfYear",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "TheDayOfYear",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "TheQuarter",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "CONCATENATE(\"Q\",D_Date[TheQuarter_tech])"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "D_Date",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[DimDate].*   FROM [agg].[DimDate] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "BusinessDateHierarchy",
+            "levels": [
+              {
+                "name": "TheQuarter",
+                "ordinal": 1,
+                "column": "TheQuarter"
+              },
+              {
+                "name": "TheDayName",
+                "ordinal": 3,
+                "column": "TheDayName"
+              },
+              {
+                "name": "TheMonthName",
+                "ordinal": 2,
+                "column": "TheMonthName"
+              },
+              {
+                "name": "TheYear",
+                "ordinal": 0,
+                "column": "TheYear"
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[DimDate].*   FROM [agg].[DimDate] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimDate"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      },
+      {
+        "name": "D_DeliveryMethods",
+        "columns": [
+          {
+            "name": "DeliveryMethodID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DeliveryMethodID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DeliveryMethodName",
+            "dataType": "string",
+            "sourceColumn": "DeliveryMethodName",
+            "sourceProviderType": "WChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "D_DeliveryMethods",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[DimDeliveryMethods].*   FROM [agg].[DimDeliveryMethods] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[DimDeliveryMethods].*   FROM [agg].[DimDeliveryMethods] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimDeliveryMethods"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      },
+      {
+        "name": "D_People",
+        "columns": [
+          {
+            "name": "PersonID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PersonID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "FullName",
+            "dataType": "string",
+            "sourceColumn": "FullName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "PreferredName",
+            "dataType": "string",
+            "sourceColumn": "PreferredName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "SearchName",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "SearchName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "IsSystemUser",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsSystemUser",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "sourceProviderType": "Boolean"
+          },
+          {
+            "name": "IsEmployee",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsEmployee",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "sourceProviderType": "Boolean"
+          },
+          {
+            "name": "IsSalesperson",
+            "dataType": "boolean",
+            "isHidden": true,
+            "sourceColumn": "IsSalesperson",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "sourceProviderType": "Boolean"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "D_People",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[DimPeople].*   FROM [agg].[DimPeople] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[DimPeople].*   FROM [agg].[DimPeople] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimPeople"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      },
+      {
+        "name": "D_StockItems",
+        "columns": [
+          {
+            "name": "StockItemID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "StockItemID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "StockItemName",
+            "dataType": "string",
+            "sourceColumn": "StockItemName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "StockGroupName",
+            "dataType": "string",
+            "sourceColumn": "StockGroupName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "SupplierID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "SupplierID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "ColorName",
+            "dataType": "string",
+            "sourceColumn": "ColorName",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "UnitPackageID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "UnitPackageID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "OuterPackageID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OuterPackageID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Brand",
+            "dataType": "string",
+            "sourceColumn": "Brand",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Size",
+            "dataType": "string",
+            "sourceColumn": "Size",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "QuantityPerOuter",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "QuantityPerOuter",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TaxRate",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "TaxRate",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "UnitPrice",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "RecommendedRetailPrice",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "RecommendedRetailPrice",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "type": "calculated",
+            "name": "ProductType",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "var margin = CALCULATE(sum(F_Invoices[LineProfit]),RELATEDTABLE(F_Invoices))",
+              "",
+              "return",
+              "",
+              "SWITCH(TRUE(),",
+              "\t            margin>200000,\"Top product\",",
+              "\t            margin<=200000 && margin>50000,\"Regular product\",",
+              "\t            margin<=50000 && margin >=0,\"Low margin product\",",
+              "\t            \"Product to kill\"",
+              "\t            )\t",
+              ""
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "D_StockItems",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[DimStockItems].*   FROM [agg].[DimStockItems] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[DimStockItems].*   FROM [agg].[DimStockItems] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimStockItems"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      },
+      {
+        "name": "F_Invoices",
+        "columns": [
+          {
+            "name": "InvoiceLineID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "InvoiceLineID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "InvoiceID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "InvoiceID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "CustomerID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "OrderID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "OrderID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DeliveryMethodID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "DeliveryMethodID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "ContactPersonID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "ContactPersonID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "AccountsPersonID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "AccountsPersonID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "SalespersonPersonID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "SalespersonPersonID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "StockItemID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "StockItemID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "PackageTypeID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "PackageTypeID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "InvoiceDate",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "InvoiceDate",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "InvoiceDateID",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "InvoiceDateID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CustomerPurchaseOrderNumber",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "CustomerPurchaseOrderNumber",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "ConfirmedDeliveryTime",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "ConfirmedDeliveryTime",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Quantity",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "UnitPrice",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TaxRate",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "TaxRate",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TaxAmount",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "TaxAmount",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "LineProfit",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "LineProfit",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "ExtendedPrice",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "ExtendedPrice",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "type": "calculated",
+            "name": "RecommendedRetailPrice_tech",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "RELATED(D_StockItems[RecommendedRetailPrice])*F_Invoices[Quantity]"
+          },
+          {
+            "type": "calculated",
+            "name": "TaxAmount_tech",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "(F_Invoices[RecommendedRetailPrice_tech]*F_Invoices[TaxRate])/(100+F_Invoices[TaxRate])"
+          },
+          {
+            "type": "calculated",
+            "name": "Quantity_UnitPrice_tech",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "F_Invoices[RecommendedRetailPrice_tech]-F_Invoices[TaxAmount_tech]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "F_Invoices",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [agg].[FactInvoices].*   FROM [agg].[FactInvoices] ",
+              "dataSource": "SqlServer wsbwmprowizjono DestinationWarehouse"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Sum of Quantity",
+            "expression": [
+              "sum(F_Invoices[Quantity])",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum of Margin",
+            "expression": "sum(F_Invoices[LineProfit])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum of Net sales",
+            "expression": "SUMX(F_Invoices,F_Invoices[Quantity]*F_Invoices[UnitPrice])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum of Gross Sales",
+            "expression": "sum(F_Invoices[ExtendedPrice])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum Cost of Sales",
+            "expression": "[Sum of Net sales]-[Sum of Margin]",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "% of Net Margin",
+            "expression": "[Sum of Margin]/[Sum of Net sales]",
+            "formatString": "0.00%;-0.00%;0.00%",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum of Taxes",
+            "expression": "sum(F_Invoices[TaxAmount])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Number of transactions",
+            "expression": "DISTINCTCOUNT(F_Invoices[InvoiceID])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Number of products",
+            "expression": "DISTINCTCOUNT(F_Invoices[StockItemID])",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "% of Net sales",
+            "expression": "DIVIDE([Sum of Net sales],CALCULATE([Sum of Net sales],ALL()))",
+            "formatString": "0.00%;-0.00%;0.00%",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "YTD Net sales",
+            "expression": "CALCULATE([Sum of Net sales],DATESYTD(D_Date[TheDate]))",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "PM Net sales",
+            "expression": "CALCULATE([Sum of Net sales],PARALLELPERIOD(D_Date[TheDate],-1,MONTH))",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Diff CM to PM Net Sales",
+            "expression": "[PM Net sales]-[Sum of Net sales]",
+            "formatString": "#,0.00",
+            "displayFolder": "1. Current Amounts"
+          },
+          {
+            "name": "Sum of Expected Gross Sales",
+            "expression": "SUM(F_Invoices[RecommendedRetailPrice_tech]) ",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Expected Amounts"
+          },
+          {
+            "name": "Sum of Expected Taxes",
+            "expression": "sum(F_Invoices[TaxAmount_tech])",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Expected Amounts"
+          },
+          {
+            "name": "Sum of Expected Net Sales",
+            "expression": "sum(F_Invoices[Quantity_UnitPrice_tech])",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Expected Amounts"
+          },
+          {
+            "name": "Sum of Expected Margin",
+            "expression": "[Sum of Expected Net Sales]-[Sum Cost of Sales]",
+            "formatString": "#,0.00",
+            "displayFolder": "2. Expected Amounts"
+          },
+          {
+            "name": "% of Expected Margin",
+            "expression": "[Sum of Expected Margin]/[Sum of Expected Net Sales]",
+            "formatString": "0.00%;-0.00%;0.00%",
+            "displayFolder": "2. Expected Amounts"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [agg].[FactInvoices].*   FROM [agg].[FactInvoices] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "FactInvoices"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "agg"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "8eb8ff2d-4eda-4fb0-9bf6-900e140e96a7",
+        "fromTable": "F_Invoices",
+        "fromColumn": "CustomerID",
+        "toTable": "D_Customers",
+        "toColumn": "CustomerID"
+      },
+      {
+        "name": "cc7acc76-2e30-46c9-9b2f-e9715907a021",
+        "fromTable": "F_Invoices",
+        "fromColumn": "StockItemID",
+        "toTable": "D_StockItems",
+        "toColumn": "StockItemID"
+      },
+      {
+        "name": "32dc0d79-dc8a-470a-b184-f3c740b9c340",
+        "fromTable": "F_Invoices",
+        "fromColumn": "SalespersonPersonID",
+        "toTable": "D_People",
+        "toColumn": "PersonID"
+      },
+      {
+        "name": "95b9c807-f95d-4e77-a6ae-2c95acd54315",
+        "fromTable": "F_Invoices",
+        "fromColumn": "DeliveryMethodID",
+        "toTable": "D_DeliveryMethods",
+        "toColumn": "DeliveryMethodID"
+      },
+      {
+        "name": "fdcc2d18-bfa4-42c6-8316-f4e34945d026",
+        "fromTable": "F_Invoices",
+        "fromColumn": "InvoiceDateID",
+        "toTable": "D_Date",
+        "toColumn": "ID"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
